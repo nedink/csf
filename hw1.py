@@ -1,3 +1,4 @@
+# -*- coding: cp1252 -*-
 # Name: David Bryant
 # Evergreen Login: dbryant17
 # Computer Science Foundations
@@ -56,6 +57,9 @@ print ''
 
 ###
 ### Collaboration
+###
+### I got help from Barbara Bryant and David Yee on figuring out what
+### homework to do and how to use Github
 ###
 
 ###     6. Modules — Python v2.7.6 documentation - http://docs.python.org/2/tutorial/modules.html
