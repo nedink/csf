@@ -1,0 +1,244 @@
+﻿Architecture
+David Bryant
+Due Tuesday 10am 1/14/2014
+Problems 4-11 in Juola Chapter 1
+
+
+4. How many different patterns could be stored in a 16-bit register? What is the largest value that could be stored as a (two’s complement) signed integer in such a register? What is the smallest value? How about the largest and smallest values that could be stored as unsigned integers?
+
+
+- A 16-bit register can hold 2^16 (or 65536) different patterns.
+- Largest value as signed integer: 32767 (0111111111111111)
+- Smallest value: -32768 (1000000000000000)
+- Largest value as unsigned integer: 65536 (1111111111111111)
+- Smallest value: 0 (0000000000000000)
+
+
+5. Convert the following 16-bit binary numbers into hexadecimal and signed decimal numbers
+(no, you don’t get to use a calculator!):
+
+
+Bin                 | Signed Decimal | Hex
+1001 1100 1110 1110 | -25362         | 9CEE
+1111 1111 1111 1111 | -1             | FFFF
+0000 0000 1111 1111 |  255           | 00FF
+0100 1000 1000 0100 |  18564         | 4884
+1111 1111 0000 0000 | -256           | FF00
+1100 1010 1111 1110 | -13570         | CAFE
+
+
+2^16 | 1 | -32767
+2^15 | 0 |
+2^14 | 0 |
+2^13 | 1 |
+2^12 | 1 | 4026
+2^11 | 1 |
+2^10 | 0 |
+2^9  | 0 |
+2^8  | 1 | 256
+2^7  | 1 |
+2^6  | 1 |
+2^5  | 0 |
+2^4  | 1 |
+2^3  | 1 | 8
+2^2  | 1 |
+2^1  | 0 |
+===============
+         -13146
+
+
+
+
+6. Convert the following 32-bit IEEE floating point numbers from hexadecimal into standard
+decimal notation.
+
+
+Just working it out based on the book.
+
+
+0x40200000 = 0100 0000 0010 0000 0000 0000 0000 0000
+                4    0    2    0    0    0    0    0
+
+
+Now, change the gaps to see the IEEE encoding: 1 bit for the sign, 8 bits for the exponent, then the remaining 23 bits for the mantissa.
+             
+             0 10000000 01000000000000000000000
+
+
+It is a positive number (sign is 0).
+From the book: “the number stored in the exponent bits is ... 127 higher than the real exponent... A real exponent of 1 would be stored as 128 (binary 1000000), and a stored exponent of 000000 would actually represent ... 2**-127.”
+The exponent is 1000000 so that is 128-127 = 1.
+The mantissa assumes that there is a 1 in front of the radix point, so it is 1.01 in binary
+So the number is 1.01 (binary) x 2**1 = 1.25 * 2 = 2.5
+
+
+0x41020000 = 0100 0001 0000 0010 0000 0000 0000 0000
+                4    1    0    2    0    0    0    0
+
+
+Now, change the gaps to see the IEEE encoding: 1 bit for the sign, 8 bits for the exponent, then the remaining 23 bits for the mantissa.
+             
+             0 10000010 00000100000000000000000
+
+
+It is a positive number (sign is 0).
+The exponent 1000010 is 130 in decimal, and we subtract 127 to get 3.
+The mantissa assumes that there is a 1 in front of the radix point, so it is 1.000001 binary
+So the number is 0b1.000001 x 2**3 = 1000.001 = 8 + 1/8 = 8.125
+            
+
+
+0x40200000 = 2.5
+0x41020000 = 8.125
+0xC1060000 = -8.375     = 1 10000010 00001100000000000000000
+
+
+0xBD800000 - 1011 1101 1000 0000 0000 0000 0000 0000
+                B    D    8    0    0    0    0    0
+             = 1 01111011 00000000000000000000000
+             = -1.0 (binary) x 2**((64+32+16+8+2+1)-127) 
+             = -1.0 x 2**(123-127) 
+             = -1.0 (binary) x 2**(-4) 
+             = -0.0001 (binary) = -(1/16) = -0.0625
+
+
+0x3EAAAAAB -          0 01111101 01010101010101010101011
+                    = 1.010101010101010101011 x 2**(-2)
+                    = 0.01010101010101010101011 = 1/3
+ = .3333333
+
+
+0x3F000000 - 0011 1111 0000 0000 0000 0000 0000 0000
+                3    F    0    0    0    0    0    0
+             = 0 01111110 00000000000000000000000
+               = 1.0 (binary) x 2**(-1)
+             = 0.1 (binary) = 1/2 = 0.5
+
+
+0x42FA8000 - 0100 0010 1111 1010 1000 0000 0000 0000
+                4    2    F    A    8    0    0    0
+             = 0 10000101 11110101000000000000000             
+             = 1.1110101 (binary) x 2**(6)
+             = 1111010.1 (binary) = 122.5
+
+
+
+
+0x42896666 - 0100 0010 1111 1010 0000 0000 0000 0000
+                4    2    8    9    6    6    6    6
+             = 0 10000101 11110100000000000000000
+             = 1.11101 (binary) x 2**(6)
+             = 1111010.0 (binary) = 122.0
+
+
+0x47C35000 - 0100 0111 1100 0011 0101 0000 0000 0000
+                4    7    C    3    5    0    0    0
+             = 0 10001111 10000110101000000000000
+             = 1.0000110101 (binary) x 2**(16)
+             = 10000110101000000.0 (binary) = 68928.0
+
+
+0x4B189680 - 0100 1011 0001 1000 1001 0110 1000 0000
+                4    B    1    8    9    6    8    0
+             = 0 10010110 00110001001011010000000
+             = 1.0011000100101101 (binary) x 2**(23)
+             = 100110001001011010000000.0 (binary) = 10000000.0
+
+
+7. Convert the following decimal numbers into 32-bit IEEE floating point notation.
+
+
+First, write it in binary:
+2.0 = 010 (binary)
+scientific notation:
+010 = 1.0 (binary) x 2**1
+The sign bit is 0 (positive integer)
+The exponent would be 1 + 127 = 128 = 10000000 in binary
+The mantissa is 1.0, so that would be represented as all 0’s.
+The answer is 0 10000000 00000000000000000000000
+
+
+First, write it in binary:
+45.0 = 32 + 8 + 4 + 1 = 2**5 + 2**3 + 2**2 + 2**0 = 101101 (binary)
+scientific notation:
+0101101 = 01.01101 x 2**5
+The sign bit is 0 (positive integer)
+The exponent would be 5 + 127 = 132 = 10000100 in binary
+The mantissa is 1.01101
+The answer is 0 10000100 01101000000000000000000
+
+
+2.0        - 10 (binary)
+             = 1.0 x 2**(2)
+             = 2 = 129 - 127
+             = 129 = 10000001 (binary)
+             = 0 10000001 10000000000000000000000
+              (0100 0000 1100 0000 0000 0000 0000 0000)
+             = 0x40C00000
+45.0       - 101101 (binary)
+             = 1.01101 x 2**(5)
+             = 5 = 132 - 127
+             = 132 = 10000010 (binary)
+             = 0 10000010 10110100000000000000000
+              (0100 0001 0101 1010 0000 0000 0000 0000)
+             = 0x415A0000
+61.01      - I do not know how to convert decimal fractions to binary fractions.
+
+
+
+
+ -18.375   - -10010.011 (binary)
+             = -1.0010011 x 2**(4)
+             the exponent is 127 + 4 = 131 = 10000011 (binary)
+             = 1 10000011 00100110000000000000000
+             = 1100 0001 1001 0011 0000 0000 0000 0000
+                  C    1    9    3    0    0    0    0  =  0xC1930000
+
+
+
+
+ -6.68     - I do not know how to convert decimal fractions to binary 
+
+
+65536      - 10000000000000000 (binary)
+             = 1.0 x 2**(16)
+             the exponent is 127 + 16 = 143 = 10001111
+             = 0 10001111 00000000000000000000000
+             = 0100 0111 1000 0000 0000 0000 0000 0000
+                  4    7    8    0    0    0    0    0  =  0x47800000
+
+
+0.000001   - I do not know how to convert decimal fractions to binary
+ 
+10000000.0 - 100110001001011010000000 (binary)
+             = 1.0011000100101101 x 2**(23)
+             the exponent is 127 + 23 = 150 = 10010110
+             = 0 10010110 00110001001011010000000
+             = 0100 1011 0001 1000 1001 0110 1000 0000
+                  4    B    1    8    9    6    8    0  =  0x4B189680
+
+
+8. Are there any numbers that can be represented exactly as a 32-bit integer but not as a 32-bit IEEE floating point number? Why or why not?
+
+
+There has to be, because there are only 23 bits reserved for a floating point mantissa.
+
+
+9. Using a standard ASCII table (check the Internet or appendix E), what 4 hexadecimal bytes would represent the string “Fred”?
+
+
+0x46726564
+
+
+
+
+10. What ASCII character string would correspond to the hexadecimal number 0x45617379?
+
+
+Easy
+
+
+11. True or false: the more 1’s there are in a binary number, the larger it is. Why or why not?
+
+
+False. 1000 is larger than 0111.
